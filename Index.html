@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 20th Platinum Anniversary - Mommyy & Daddyy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background: #0a0a0a;
+        }
+
+        /* === SURPRISE GATE PAGE === */
+        .gate-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 1.2s ease, transform 1.2s ease;
+        }
+
+        .gate-page.hidden {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        .gate-page::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(192,192,192,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(192,192,192,0.08) 0%, transparent 50%);
+            animation: shimmer 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes shimmer {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .gate-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .gate-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            color: #e8e8e8;
+            text-shadow: 0 0 20px rgba(192,192,192,0.5), 0 0 40px rgba(192,192,192,0.3);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(192,192,192,0.5), 0 0 40px rgba(192,192,192,0.3); }
+            to { text-shadow: 0 0 30px rgba(192,192,192,0.8), 0 0 60px rgba(192,192,192,0.5), 0 0 80px rgba(192,192,192,0.3); }
+        }
+
+        .gate-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: #b8b8b8;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+        }
+
+        .surprise-btn {
+            position: relative;
+            padding: 20px 60px;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            font-weight: 600;
+            color: #1a1a2e;
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8, #c0c0c0);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(192,192,192,0.4), 0 0 60px rgba(192,192,192,0.2);
+            transition: all 0.4s ease;
+            animation: gradientShift 3s ease infinite, pulse 2s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 40px rgba(192,192,192,0.4), 0 0 60px rgba(192,192,192,0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 50px rgba(192,192,192,0.6), 0 0 80px rgba(192,192,192,0.4); }
+        }
+
+        .surprise-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 50px rgba(192,192,192,0.7), 0 0 100px rgba(192,192,192,0.5);
+        }
+
+        .surprise-btn::before {
+            content: '✨';
+            margin-right: 10px;
+        }
+
+        .surprise-btn::after {
+            content: '✨';
+            margin-left: 10px;
+        }
+
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(192,192,192,0.3);
+            font-size: 20px;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* === MAIN CONTENT PAGE === */
+        .main-page {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-page.active {
+            display: block;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Particle canvas */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 80px 20px 40px;
+        }
+
+        .platinum-badge {
+            display: inline-block;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8, #a0a0a0);
+            background-size: 200% 200%;
+            border-radius: 50px;
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: gradientShift 3s ease infinite;
+            box-shadow: 0 5px 20px rgba(192,192,192,0.3);
+        }
+
+        .hero h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3rem, 8vw, 7rem);
+            color: #f0f0f0;
+            text-shadow: 0 0 30px rgba(192,192,192,0.4);
+            margin-bottom: 10px;
+            animation: slideDown 1s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .hero .names {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: #c0c0c0;
+            letter-spacing: 2px;
+            animation: slideUp 1s ease 0.3s both;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .hero .years {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: #888;
+            margin-top: 15px;
+            animation: slideUp 1s ease 0.6s both;
+        }
+
+        .hero .years span {
+            color: #c0c0c0;
+            font-weight: 600;
+        }
+
+        /* Photo Section */
+        .photo-section {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            animation: fadeIn 1.5s ease 0.8s both;
+        }
+
+        .photo-frame {
+            position: relative;
+            padding: 15px;
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8, #a0a0a0);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(192,192,192,0.3), 0 0 100px rgba(192,192,192,0.1);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+
+        .photo-frame:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.02);
+        }
+
+        .photo-frame img {
+            display: block;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 15px;
+            filter: brightness(1.05) contrast(1.05);
+        }
+
+        .photo-frame::before {
+            content: '💕';
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            font-size: 2rem;
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Message Section */
+        .message-section {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .message-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(192,192,192,0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(192,192,192,0.1);
+        }
+
+        .message-card h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #c0c0c0;
+            margin-bottom: 20px;
+        }
+
+        .message-card p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: #ccc;
+            line-height: 2;
+            font-weight: 300;
+        }
+
+        .message-card .highlight {
+            color: #e8e8e8;
+            font-weight: 600;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            position: relative;
+            z-index: 2;
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline-section h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: #c0c0c0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .timeline-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(192,192,192,0.15);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #c0c0c0, transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .timeline-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .timeline-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(192,192,192,0.15);
+            border-color: rgba(192,192,192,0.4);
+        }
+
+        .timeline-item .year {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #c0c0c0;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item .event {
+            color: #aaa;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Quotes Section */
+        .quotes-section {
+            position: relative;
+            z-index: 2;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .quote-box {
+            position: relative;
+            padding: 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #d0d0d0;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        .quote-box::before {
+            content: '"';
+            font-size: 5rem;
+            color: rgba(192,192,192,0.2);
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .quote-box::after {
+            content: '"';
+            font-size: 5rem;
+            color: rgba(192,192,192,0.2);
+            position: absolute;
+            bottom: -40px;
+            right: 10px;
+            font-family: 'Great Vibes', cursive;
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(180deg, transparent, rgba(0,0,0,0.5));
+        }
+
+        .footer .love-message {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #c0c0c0;
+            margin-bottom: 20px;
+        }
+
+        .footer .from {
+            font-family: 'Poppins', sans-serif;
+            color: #888;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .footer .from span {
+            color: #c0c0c0;
+            font-weight: 600;
+        }
+
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .photo-frame {
+                transform: none;
+            }
+            .photo-frame:hover {
+                transform: scale(1.02);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SURPRISE GATE -->
+    <div class="gate-page" id="gatePage">
+        <div class="floating-hearts" id="floatingHearts"></div>
+        <div class="gate-content">
+            <h1 class="gate-title">A Special Surprise Awaits...</h1>
+            <p class="gate-subtitle">For the Most Wonderful Parents</p>
+            <button class="surprise-btn" id="surpriseBtn" onclick="revealSurprise()">
+                Surprise Wish Click Here!
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-page" id="mainPage">
+        <canvas id="particles"></canvas>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="platinum-badge">💎 Platinum Anniversary 💎</div>
+            <h1>Happy Anniversary</h1>
+            <p class="names">Mommyy & Daddyy</p>
+            <p class="years">Celebrating <span>20 Beautiful Years</span> of Love & Togetherness</p>
+        </section>
+
+        <!-- Photo -->
+        <section class="photo-section">
+            <div class="photo-frame">
+                <img src="1000137933.jpg" alt="Mommyy and Daddyy - 20 Years of Love">
+            </div>
+        </section>
+
+        <!-- Loving Message -->
+        <section class="message-section">
+            <div class="message-card scroll-reveal">
+                <h2>To My Dearest Parents</h2>
+                <p>
+                    <span class="highlight">20 years ago</span>, two beautiful souls came together and promised to walk hand in hand through every chapter of life. Today, as we celebrate your <span class="highlight">Platinum Anniversary</span>, I am reminded that true love isn't just about the grand gestures — it's about the quiet moments, the shared laughter, the unwavering support, and the countless memories you've built together.
+                </p>
+                <p style="margin-top: 20px;">
+                    You have shown me that love is patient, love is kind, and most importantly, <span class="highlight">love is forever</span>. Your journey together is the greatest gift you could ever give — a living example of what it means to choose each other, every single day, for two decades and counting.
+                </p>
+            </div>
+
+            <div class="message-card scroll-reveal">
+                <h2>20 Years of Memories</h2>
+                <p>
+                    From the day you said "I do" to this very moment, you have created a legacy of love that will inspire generations. Through every sunrise and sunset, every challenge and triumph, you stood by each other with grace and devotion. Your love story is not just written in years — it's etched in the hearts of everyone who knows you.
+                </p>
+                <p style="margin-top: 20px;">
+                    Here's to the <span class="highlight">20 years behind you</span> and the countless beautiful years ahead. May your love continue to shine as brilliantly as platinum — rare, precious, and eternal.
+                </p>
+            </div>
+        </section>
+
+        <!-- Timeline -->
+        <section class="timeline-section">
+            <h2 class="scroll-reveal">Your Beautiful Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item scroll-reveal">
+                    <div class="year">2006</div>
+                    <div class="event">The day two hearts became one. Your beautiful journey began with love, promise, and hope.</div>
+                </div>
+                <div class="timeline-item scroll-reveal">
+                    <div class="year">2010</div>
+                    <div class="event">Five years of growing together, learning together, and building the foundation of your beautiful family.</div>
+                </div>
+                <div class="timeline-item scroll-reveal">
+                    <div class="year">2015</div>
+                    <div class="event">A decade of love! Ten years of proving that true love only gets stronger with time.</div>
+                </div>
+                <div class="timeline-item scroll-reveal">
+                    <div class="year">2020</div>
+                    <div class="event">Fifteen years of unwavering companionship, facing every storm hand in hand.</div>
+                </div>
+                <div class="timeline-item scroll-reveal">
+                    <div class="year">2026</div>
+                    <div class="event">🎉 20 Glorious Years! Your Platinum Anniversary — a milestone of love, trust, and endless devotion.</div>
+                </div>
+                <div class="timeline-item scroll-reveal">
+                    <div class="year">Forever</div>
+                    <div class="event">The best is yet to come. May your love story continue to inspire for all eternity.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quotes -->
+        <section class="quotes-section scroll-reveal">
+            <div class="quote-box">
+                The greatest thing you'll ever learn is to love and be loved in return. Mommyy and Daddyy, you have mastered this art for 20 beautiful years.
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="love-message">Forever Grateful for Your Love</p>
+            <p class="from">With all my love,<br><span>Sanskruti</span> 💕</p>
+        </footer>
+    </div>
+
+    <script>
+        // Floating hearts on gate page
+        function createHearts() {
+            const container = document.getElementById('floatingHearts');
+            const heartSymbols = ['💕', '💖', '💗',
